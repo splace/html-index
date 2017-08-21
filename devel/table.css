@@ -1,0 +1,76 @@
+html {
+	background-color:Grey;
+	color:white; 
+}
+
+body {
+	column-width:40em;
+}
+
+th * {
+	margin-top:0;
+	margin-bottom:0;
+} 
+
+th h2 {
+	font-weight:normal;
+	font-stretch:condensed;
+} 
+ 
+th h3 {
+	background-color:Brown;
+	border-radius: .25em;
+} 
+
+td:nth-child(2n+2) {  
+	color:black; 
+	  background-color:LightBlue;
+}
+
+td:nth-child(2n+3) {  
+	color:black; 
+	  background-color:LightGrey;
+}
+
+td {
+	padding-left:0.2em;
+	padding-right:0.2em;
+}
+
+
+tr td:first-of-type { 
+	font-weight:Bold;
+	color:white; 
+	background-color:Brown;
+	text-align: center;
+	border-radius: .25em;
+	
+} 
+
+tr td:nth-child(3) {  
+	   text-align:right;
+}
+
+
+tr td:nth-child(4) {  
+	   text-align:center;
+}
+
+tr td a {
+  display: block;
+    text-decoration: none;
+}
+tr td a:hover {
+    text-decoration: underline;
+	background-color:white;
+}
+
+
+th h1~*{
+	visibility: hidden;
+}
+
+th h1:hover~*{
+	visibility: visible;
+}
+

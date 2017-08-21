@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<remoteDir>
+  <dir>Desktop</dir>
+  <dir>Documents</dir>
+  <dir>Downloads</dir>
+  <dir>Music</dir>
+  <dir>Pictures</dir>
+  <dir>Public</dir>
+  <dir>Templates</dir>
+  <dir>Videos</dir>
+  <file>
+      <name>c.py</name>
+      <size>1244</size>
+      <lastModTime full="20151009-000000" y="2015" d="9" m="10" hh="0" mm="0" ss="0" />
+  </file>
+  <file>
+      <name>cacerts_linux</name>
+      <size>177207</size>
+      <lastModTime full="20140915-000000" y="2014" d="15" m="9" hh="0" mm="0" ss="0" />
+  </file>
+  <file>
+      <name>empty.txt</name>
+      <size>0</size>
+      <lastModTime full="20150917-000000" y="2015" d="17" m="9" hh="0" mm="0" ss="0" />
+  </file>
+  <file>
+      <name>hamlet.xml</name>
+      <size>279658</size>
+      <lastModTime full="20160917-084100" y="2016" d="17" m="9" hh="8" mm="41" ss="0" />
+  </file>
+</remoteDir>
+
+ 
+

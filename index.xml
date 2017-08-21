@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="index.xsl"?>
+<index host="Hal3" name="/home/simon/Dropbox/github/working/dirlisting" >
+	<dir name="css" modified="2017-02-27T22:06:12Z"/>
+	<dir name="devel" modified="2017-02-27T22:06:12Z"/>
+	<txt name="Screenshot.png" size="1900" modified="2017-07-06T22:58:13+01:00"/>
+	<txt name="index.xsl" size="1900" modified="2017-07-06T22:58:13+01:00"/>
+	<txt name="index.xml" size="463" modified="2017-07-06T23:07:10+01:00"/>
+	<txt name="index.css" size="1100" modified="2017-07-05T22:47:04+01:00"/>
+</index>

@@ -69,7 +69,9 @@
 		<xsl:attribute name="datetime">
 		<xsl:value-of select="@modified"/>
 		</xsl:attribute>
-	    <xsl:value-of select="concat(substring(@modified, 1, 10 ),' ', substring(@modified, 12, 8 ))"/>
+	    <xsl:value-of select="substring(@modified, 1, 10)"/>
+  	    <xsl:value-of select=" "/>
+	    <xsl:value-of select="substring(@modified, 12, 8)"/>
 	</time>
     </td>
 </xsl:template>

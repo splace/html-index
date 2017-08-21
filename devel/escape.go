@@ -3,11 +3,11 @@ package dirlisting
 import "bytes"
 
 func escape(u string) string{
-	for _,c:=range(u){
+	for i,c:=range(u){
 		switch c {
 		case '"','\'','&','<','>':
-			buf := new(bytes.Buffer)
-			for _,c:=range(u){
+			buf := bytes.NewBufferString(u[:i])
+			for _,c:=range(u[i:]){
 				switch c {
 				case '"':
 					buf.WriteString("&quot;")

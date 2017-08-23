@@ -13,8 +13,8 @@ const (
 	NameTypeSizeModTimeMode
 )
 
-// make a hierarchy of formatting, by making separate stringers, all embedding the source, for the different compositions of information.
-// this hierarchy fits XML structure, and means element id's are all just strings.   
+// make a hierarchy of formatting, by using separate stringers, all embedding the source, for the different compositions of information.
+// a hierarchy fits XML structure, and means element id's are all just strings.   
 
 var FileFormatting = "\t<txt %s/>\n"
 var DirFormatting = "\t<dir %s/>\n"
@@ -96,22 +96,21 @@ func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint) {
 			if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribNameInfo{fi})}
 		}
 		for _, fi := range fis {
-			if !fi.IsDir() {fmt.Fprintf(w,FileFormatting, AttribNameInfo{fi})}
+			if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribNameInfo{fi})}
 		}
-
 	case NameSizeModTime:
 		for _, fi := range fis {
 			if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirInfo{fi})}
 		}
 		for _, fi := range fis {
-			if !fi.IsDir() {fmt.Fprintf(w,FileFormatting, AttribFileInfo{fi})}
+			if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribFileInfo{fi})}
 		}
 	case NameSizeModTimeMode:
 		for _, fi := range fis {
 			if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
 		}
 		for _, fi := range fis {
-			if !fi.IsDir() {fmt.Fprintf(w,FileFormatting, AttribFileExtendedInfo{fi})}
+			if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribFileExtendedInfo{fi})}
 		}
 	case NameTypeSizeModTimeMode:
 		for _, fi := range fis {
@@ -119,7 +118,7 @@ func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint) {
 		}
 		for _, fi := range fis {
 			// TODO retrieve type maybe from xattribs?
-			if !fi.IsDir() {fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
+			if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
 		}
 	}
 }

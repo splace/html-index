@@ -89,36 +89,78 @@ func ignoreError(fn func ()(string,error)) string{
 	return r
 }
 
+var dirFirst bool = true
+
 func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint) {
 	switch details {
 	case NameOnly:
-		for _, fi := range fis {
-			if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribNameInfo{fi})}
-		}
-		for _, fi := range fis {
-			if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribNameInfo{fi})}
+		if dirFirst{
+			for _, fi := range fis {
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribNameInfo{fi})}
+			}
+			for _, fi := range fis {
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribNameInfo{fi})}
+			}
+		}else{
+			for _, fi := range fis {
+				if fi.IsDir(){
+					fmt.Fprintf(w,DirFormatting, AttribNameInfo{fi})
+				}else if fi.Mode().IsRegular() {
+					fmt.Fprintf(w,FileFormatting, AttribNameInfo{fi})
+				} 
+			}
 		}
 	case NameSizeModTime:
-		for _, fi := range fis {
-			if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirInfo{fi})}
-		}
-		for _, fi := range fis {
-			if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribFileInfo{fi})}
+		if dirFirst{
+			for _, fi := range fis {
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirInfo{fi})}
+			}
+			for _, fi := range fis {
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribFileInfo{fi})}
+			}
+		}else{
+			for _, fi := range fis {
+				if fi.IsDir(){
+					fmt.Fprintf(w,DirFormatting,AttribDirInfo{fi})
+				}else if fi.Mode().IsRegular() {
+					fmt.Fprintf(w,FileFormatting,AttribFileInfo{fi})
+				}
+			}
 		}
 	case NameSizeModTimeMode:
-		for _, fi := range fis {
-			if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
-		}
-		for _, fi := range fis {
-			if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribFileExtendedInfo{fi})}
+		if dirFirst{
+			for _, fi := range fis {
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
+			}
+			for _, fi := range fis {
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribFileExtendedInfo{fi})}
+			}
+		}else{
+			for _, fi := range fis {
+				if fi.IsDir(){
+					fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})
+				}else if fi.Mode().IsRegular() {
+					fmt.Fprintf(w,FileFormatting, AttribDirExtendedInfo{fi})
+				} 
+			}
 		}
 	case NameTypeSizeModTimeMode:
-		for _, fi := range fis {
-			if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
-		}
-		for _, fi := range fis {
-			// TODO retrieve type maybe from xattribs?
-			if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
+		if dirFirst{
+			for _, fi := range fis {
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
+			}
+			for _, fi := range fis {
+				// TODO retrieve type maybe from xattribs?
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
+			}
+		}else{
+			for _, fi := range fis {
+				if fi.IsDir(){
+					fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})
+				}else if fi.Mode().IsRegular() {
+					fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})
+				}
+			}
 		}
 	}
 }

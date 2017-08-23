@@ -70,7 +70,7 @@ func (fi AttribDirExtendedInfo) String() string {
 }
 
 
-func XMLEncode(w io.WriteCloser, dir string,details uint) (err error){
+func WriteXML(w io.WriteCloser, dir string,details uint) (err error){
 	folder,err:=os.Open(dir) 
 	if err!=nil{return}
 	fileInfos,err:=folder.Readdir(0)
@@ -78,7 +78,7 @@ func XMLEncode(w io.WriteCloser, dir string,details uint) (err error){
 	fmt.Fprint(w,"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n")
 	fmt.Fprint(w,"<?xml-stylesheet type=\"text/xsl\" href=\"index.xsl\"?>\n")
 	fmt.Fprint(w,"<index host=\""+ignoreError(os.Hostname)+"\" name=\""+path.Join(ignoreError(os.Getwd),folder.Name())+"\" >\n")
-	TagEncode(w,fileInfos,details)
+	WriteTags(w,fileInfos,details)
 	fmt.Fprint(w,"</index>\n")
 	w.Close()
 	return
@@ -90,7 +90,7 @@ func ignoreError(fn func ()(string,error)) string{
 }
 
 
-func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {
+func WriteTags(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {
 	switch details {
 	case NameOnly:
 		if len(dirFirstFlag)==0 || dirFirstFlag[0]{

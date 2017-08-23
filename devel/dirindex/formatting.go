@@ -89,12 +89,12 @@ func ignoreError(fn func ()(string,error)) string{
 	return r
 }
 
-// create closure object for specific tag structure
+// create a closure for a specific tag structure
 func TagWriter(details uint,DirFirst ...bool) func(io.WriteCloser, []os.FileInfo){
 	return func(w io.WriteCloser, fis []os.FileInfo){ WriteTags(w, fis,details,DirFirst...)}
 }
 
-// WriteTags writes the directory listing as XML Tages, with the required details, and optionally folders first.
+// WriteTags writes the directory listing as XML Tags, with the required details, and optionally folders first.
 func WriteTags(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {
 	switch details {
 	case NameOnly:

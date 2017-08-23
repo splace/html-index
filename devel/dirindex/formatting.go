@@ -154,15 +154,17 @@ func WriteTags(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...
 				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
 			}
 			for _, fi := range fis {
-				// TODO retrieve type maybe from xattribs?
-				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
+				// TODO retrieve actual type,(and so weather Text) maybe from xattribs?
+				//if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"text/*",fi})}
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,DefaultFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
 			}
 		}else{
 			for _, fi := range fis {
 				if fi.IsDir(){
 					fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})
 				}else if fi.Mode().IsRegular() {
-					fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})
+					//fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"text/*",fi})
+					fmt.Fprintf(w,DefaultFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})
 				}
 			}
 		}

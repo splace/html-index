@@ -17,7 +17,7 @@ func TestFormatStream(t *testing.T) {
 func TestFormatting(t *testing.T) {
 	f,err:=os.Create("index.xml") 
 	if err!=nil{panic(err)}
-	WriteXML(f,".",NameSizeModTime)
+	WriteXML(f,".",TagWriter(NameSizeModTime))
 }
 
 

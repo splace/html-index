@@ -69,8 +69,8 @@ func (fi AttribDirExtendedInfo) String() string {
 	return fmt.Sprintf("name=\"%s\" modified=\"%s\" mode=\"%s\"", escape(fi.Name()), fi.ModTime().Format(time.RFC3339), fi.Mode())
 }
 
-// WriteXML writes the directory listing as XML, with the required details.
-func WriteXML(w io.WriteCloser, dir string,details uint) (err error){
+// WriteXML writes the directory listing as XML, using the indicated Tag writer.
+func WriteXML(w io.WriteCloser, dir string,tagWriter func(io.WriteCloser, []os.FileInfo)) (err error){
 	folder,err:=os.Open(dir) 
 	if err!=nil{return}
 	fileInfos,err:=folder.Readdir(0)
@@ -78,7 +78,7 @@ func WriteXML(w io.WriteCloser, dir string,details uint) (err error){
 	fmt.Fprint(w,"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n")
 	fmt.Fprint(w,"<?xml-stylesheet type=\"text/xsl\" href=\"index.xsl\"?>\n")
 	fmt.Fprint(w,"<index host=\""+ignoreError(os.Hostname)+"\" name=\""+path.Join(ignoreError(os.Getwd),folder.Name())+"\" >\n")
-	WriteTags(w,fileInfos,details)
+	tagWriter(w,fileInfos)
 	fmt.Fprint(w,"</index>\n")
 	w.Close()
 	return
@@ -89,6 +89,10 @@ func ignoreError(fn func ()(string,error)) string{
 	return r
 }
 
+// create closure object for specific tag structure
+func TagWriter(details uint,FirstFlag ...bool) func(io.WriteCloser, []os.FileInfo){
+	return func(w io.WriteCloser, fis []os.FileInfo){ WriteTags(w, fis,details,FirstFlag...)}
+}
 
 // WriteTags writes the directory listing as XML Tages, with the required details, and optionally folders first.
 func WriteTags(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {

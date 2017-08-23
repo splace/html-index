@@ -3,21 +3,21 @@
 <index host="Hal3" name="/home/simon/Dropbox/github/working/html-index/devel" >
 	<txt name="table.css" size="875" modified="2017-07-05T22:43:10+01:00"/>
 	<txt name="index.xsl" size="1953" modified="2017-08-21T19:10:28+01:00"/>
+	<txt name="oddFileName%&lt;&gt;&quot;&apos;&amp;`\~@{}[]()*?#" size="0" modified="2017-08-21T00:02:27+01:00"/>
 	<txt name="dirListing.css" size="1663" modified="2017-02-26T23:58:38Z"/>
 	<txt name="styled.xml" size="2838" modified="2017-07-05T20:17:53+01:00"/>
 	<txt name="table_sortable.xsl" size="1578" modified="2017-03-05T22:31:08Z"/>
 	<txt name="orig.html" size="16576" modified="2017-02-27T00:02:48Z"/>
 	<txt name="listing.xml" size="1443" modified="2017-07-05T20:17:43+01:00"/>
-	<txt name="formatting_test.go" size="1057" modified="2017-08-21T22:40:59+01:00"/>
+	<txt name="formatting_test.go" size="1233" modified="2017-08-23T17:18:56+01:00"/>
 	<txt name="sorttable.js" size="16877" modified="2017-03-05T22:28:44Z"/>
-	<txt name="index.xml" size="0" modified="2017-08-21T22:41:00+01:00"/>
+	<txt name="index.xml" size="0" modified="2017-08-23T17:18:57+01:00"/>
 	<txt name="inlineStyle.css" size="1945" modified="2017-02-26T23:57:13Z"/>
 	<txt name="apache.html" size="694" modified="2017-02-27T00:42:28Z"/>
 	<txt name="index.css" size="1073" modified="2017-08-21T00:58:45+01:00"/>
-	<txt name="escape.go" size="547" modified="2017-08-21T22:40:47+01:00"/>
+	<txt name="escape.go" size="547" modified="2017-08-21T22:42:50+01:00"/>
 	<txt name="table.xsl" size="1925" modified="2017-08-20T21:36:28+01:00"/>
 	<txt name="table-old.xsl" size="2420" modified="2017-07-05T01:11:12+01:00"/>
-	<txt name="oddFileName%&lt;&gt;&quot;&apos;&amp;`\@{}[]()*?#~" size="0" modified="2017-08-21T00:02:27+01:00"/>
-	<txt name="formatting.go" size="3139" modified="2017-08-21T00:55:34+01:00"/>
+	<txt name="formatting.go" size="2803" modified="2017-08-23T17:13:51+01:00"/>
 	<txt name="python.xml" size="882" modified="2017-08-18T19:27:05+01:00"/>
 </index>

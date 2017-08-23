@@ -12,8 +12,8 @@ const (
 	NameTypeSizeModTimeMode
 )
 
-var DefaultFileFormatting = "\t<txt %s/>\n"
-var DefaultDirFormatting = "\t<dir %s/>\n"
+var FileFormatting = "\t<txt %s/>\n"
+var DirFormatting = "\t<dir %s/>\n"
 var DefaultFormatting = "\t<raw %s/>\n"
 
 type AttribNameInfo struct {
@@ -65,48 +65,39 @@ func (fi AttribDirExtendedInfo) String() string {
 	return fmt.Sprintf("name=\"%s\" modified=\"%s\" mode=\"%s\"", escape(fi.Name()), fi.ModTime().Format(time.RFC3339), fi.Mode())
 }
 
-
-func FileListing2XMLNodes(fis []os.FileInfo) (r io.Reader) {
-	return FileListingFlex2XMLNodesf(fis, NameSizeModTime)
-}
-
-func FileListingFlex2XMLNodes(fis []os.FileInfo, details uint) (r io.Reader) {
-	return FileListingFlex2XMLNodesf(fis, details)
-}
-
-func FileListingFlex2XMLNodesf(fis []os.FileInfo, details uint) (r io.Reader) {
+func XMLEncode(fis []os.FileInfo, details uint) (r io.Reader) {
 	r, w := io.Pipe()
 	go func() {
 		switch details {
 		case NameOnly:
 			for _, fi := range fis {
-				if fi.IsDir() {fmt.Fprintf(w,DefaultDirFormatting, AttribNameInfo{fi})}
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribNameInfo{fi})}
 			}
 			for _, fi := range fis {
-				if !fi.IsDir() {fmt.Fprintf(w,DefaultFileFormatting, AttribNameInfo{fi})}
+				if !fi.IsDir() {fmt.Fprintf(w,FileFormatting, AttribNameInfo{fi})}
 			}
 
 		case NameSizeModTime:
 			for _, fi := range fis {
-				if fi.IsDir() {fmt.Fprintf(w,DefaultDirFormatting, AttribDirInfo{fi})}
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirInfo{fi})}
 			}
 			for _, fi := range fis {
-				if !fi.IsDir() {fmt.Fprintf(w,DefaultFileFormatting, AttribFileInfo{fi})}
+				if !fi.IsDir() {fmt.Fprintf(w,FileFormatting, AttribFileInfo{fi})}
 			}
 		case NameSizeModTimeMode:
 			for _, fi := range fis {
-				if fi.IsDir() {fmt.Fprintf(w,DefaultDirFormatting, AttribDirExtendedInfo{fi})}
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
 			}
 			for _, fi := range fis {
-				if !fi.IsDir() {fmt.Fprintf(w,DefaultFileFormatting, AttribFileExtendedInfo{fi})}
+				if !fi.IsDir() {fmt.Fprintf(w,FileFormatting, AttribFileExtendedInfo{fi})}
 			}
 		case NameTypeSizeModTimeMode:
 			for _, fi := range fis {
-				if fi.IsDir() {fmt.Fprintf(w,DefaultDirFormatting, AttribDirExtendedInfo{fi})}
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
 			}
 			for _, fi := range fis {
-				// TODO retrieve type from xattribs
-				if !fi.IsDir() {fmt.Fprintf(w,DefaultFileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
+				// TODO retrieve type from xattribs?
+				if !fi.IsDir() {fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
 			}
 		}
 		w.Close()

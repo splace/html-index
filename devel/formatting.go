@@ -89,12 +89,11 @@ func ignoreError(fn func ()(string,error)) string{
 	return r
 }
 
-var dirFirst bool = true
 
-func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint) {
+func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {
 	switch details {
 	case NameOnly:
-		if dirFirst{
+		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
 				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribNameInfo{fi})}
 			}
@@ -111,7 +110,7 @@ func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint) {
 			}
 		}
 	case NameSizeModTime:
-		if dirFirst{
+		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
 				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirInfo{fi})}
 			}
@@ -128,7 +127,7 @@ func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint) {
 			}
 		}
 	case NameSizeModTimeMode:
-		if dirFirst{
+		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
 				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
 			}
@@ -145,7 +144,7 @@ func TagEncode(w io.WriteCloser, fis []os.FileInfo,details uint) {
 			}
 		}
 	case NameTypeSizeModTimeMode:
-		if dirFirst{
+		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
 				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
 			}

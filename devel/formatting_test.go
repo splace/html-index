@@ -11,9 +11,7 @@ func TestFormatStream(t *testing.T) {
 	TagEncode(os.Stdout,fileInfos,NameSizeModTime)
 	TagEncode(os.Stdout,fileInfos,NameSizeModTimeMode)
 	TagEncode(os.Stdout,fileInfos,NameTypeSizeModTimeMode)
-	dirFirst=false
-	TagEncode(os.Stdout,fileInfos,NameOnly)
-
+	TagEncode(os.Stdout,fileInfos,NameOnly,false)
 }
 
 func TestFormatting(t *testing.T) {
@@ -21,4 +19,5 @@ func TestFormatting(t *testing.T) {
 	if err!=nil{panic(err)}
 	XMLEncode(f,".",NameSizeModTime)
 }
+
 

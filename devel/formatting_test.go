@@ -1,10 +1,10 @@
-package dirlisting
+package  dirindex
 
 import "os"
 import "io/ioutil"
 import "testing"
 
-func TestFlexFormatting(t *testing.T) {
+func TestFormattingStream(t *testing.T) {
 	fileInfos,err:=ioutil.ReadDir(".")
 	if err!=nil{panic(err)}
 	TagEncode(os.Stdout,fileInfos,NameOnly)
@@ -13,7 +13,7 @@ func TestFlexFormatting(t *testing.T) {
 	TagEncode(os.Stdout,fileInfos,NameTypeSizeModTimeMode)
 }
 
-func TestStringFormatting(t *testing.T) {
+func TestFormatting(t *testing.T) {
 	f,err:=os.Create("index.xml") 
 	if err!=nil{panic(err)}
 	XMLEncode(f,".",NameSizeModTime)

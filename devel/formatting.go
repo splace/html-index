@@ -1,4 +1,4 @@
-package dirlisting
+package dirindex
 
 import "os"
 import "io"

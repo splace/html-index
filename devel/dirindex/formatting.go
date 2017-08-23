@@ -69,7 +69,7 @@ func (fi AttribDirExtendedInfo) String() string {
 	return fmt.Sprintf("name=\"%s\" modified=\"%s\" mode=\"%s\"", escape(fi.Name()), fi.ModTime().Format(time.RFC3339), fi.Mode())
 }
 
-
+// WriteXML writes the directory listing as XML, with the required details.
 func WriteXML(w io.WriteCloser, dir string,details uint) (err error){
 	folder,err:=os.Open(dir) 
 	if err!=nil{return}
@@ -90,6 +90,7 @@ func ignoreError(fn func ()(string,error)) string{
 }
 
 
+// WriteTags writes the directory listing as XML Tages, with the required details, and optionally folders first.
 func WriteTags(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {
 	switch details {
 	case NameOnly:

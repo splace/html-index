@@ -90,8 +90,8 @@ func ignoreError(fn func ()(string,error)) string{
 }
 
 // create closure object for specific tag structure
-func TagWriter(details uint,FirstFlag ...bool) func(io.WriteCloser, []os.FileInfo){
-	return func(w io.WriteCloser, fis []os.FileInfo){ WriteTags(w, fis,details,FirstFlag...)}
+func TagWriter(details uint,DirFirst ...bool) func(io.WriteCloser, []os.FileInfo){
+	return func(w io.WriteCloser, fis []os.FileInfo){ WriteTags(w, fis,details,DirFirst...)}
 }
 
 // WriteTags writes the directory listing as XML Tages, with the required details, and optionally folders first.

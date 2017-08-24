@@ -20,52 +20,52 @@ var FileFormatting = "\t<txt %s/>\n"
 var DirFormatting = "\t<dir %s/>\n"
 var DefaultFormatting = "\t<raw %s/>\n"
 
-type AttribNameInfo struct {
+type NameStringer struct {
 	os.FileInfo
 }
 
-func (fi AttribNameInfo) String() string {
+func (fi NameStringer) String() string {
 	return fmt.Sprintf("name=\"%s\"", escape(fi.Name()))
 }
 
-type AttribFileInfo struct {
+type FileNameSizeModTimeStringer struct {
 	os.FileInfo
 }
 
-func (fi AttribFileInfo) String() string {
+func (fi FileNameSizeModTimeStringer) String() string {
 	return fmt.Sprintf("name=\"%s\" size=\"%d\" modified=\"%s\"", escape(fi.Name()), fi.Size(), fi.ModTime().Format(time.RFC3339))
 }
 
-type AttribDirInfo struct {
+type DirNameSizeModTimeStringer struct {
 	os.FileInfo
 }
 
-func (fi AttribDirInfo) String() string {
+func (fi DirNameSizeModTimeStringer) String() string {
 	return fmt.Sprintf("name=\"%s\" modified=\"%s\"", escape(fi.Name()), fi.ModTime().Format(time.RFC3339))
 }
 
-type AttribFileExtendedInfo struct {
+type FileNameSizeModTimeModeStringer struct {
 	os.FileInfo
 }
 
-func (fi AttribFileExtendedInfo) String() string {
+func (fi FileNameSizeModTimeModeStringer) String() string {
 	return fmt.Sprintf("name=\"%s\" size=\"%d\" modified=\"%s\" mode=\"%s\"", escape(fi.Name()), fi.Size(), fi.ModTime().Format(time.RFC3339), fi.Mode())
 }
 
-type AttribTypedFileExtendedInfo struct {
+type FileNameTypeSizeModTimeModeStringer struct {
 	mime string
 	os.FileInfo
 }
 
-func (fi AttribTypedFileExtendedInfo) String() string {
+func (fi FileNameTypeSizeModTimeModeStringer) String() string {
 	return fmt.Sprintf("name=\"%s\" type=\"%s\" size=\"%d\" modified=\"%s\" mode=\"%s\"", escape(fi.Name()),fi.mime, fi.Size(), fi.ModTime().Format(time.RFC3339), fi.Mode())
 }
 
-type AttribDirExtendedInfo struct {
+type DirNameSizeModTimeModeStringer struct {
 	os.FileInfo
 }
 
-func (fi AttribDirExtendedInfo) String() string {
+func (fi DirNameSizeModTimeModeStringer) String() string {
 	return fmt.Sprintf("name=\"%s\" modified=\"%s\" mode=\"%s\"", escape(fi.Name()), fi.ModTime().Format(time.RFC3339), fi.Mode())
 }
 
@@ -100,71 +100,71 @@ func WriteTags(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...
 	case NameOnly:
 		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
-				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribNameInfo{fi})}
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, NameStringer{fi})}
 			}
 			for _, fi := range fis {
-				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribNameInfo{fi})}
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, NameStringer{fi})}
 			}
 		}else{
 			for _, fi := range fis {
 				if fi.IsDir(){
-					fmt.Fprintf(w,DirFormatting, AttribNameInfo{fi})
+					fmt.Fprintf(w,DirFormatting, NameStringer{fi})
 				}else if fi.Mode().IsRegular() {
-					fmt.Fprintf(w,FileFormatting, AttribNameInfo{fi})
+					fmt.Fprintf(w,FileFormatting, NameStringer{fi})
 				} 
 			}
 		}
 	case NameSizeModTime:
 		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
-				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirInfo{fi})}
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, DirNameSizeModTimeStringer{fi})}
 			}
 			for _, fi := range fis {
-				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribFileInfo{fi})}
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, FileNameSizeModTimeStringer{fi})}
 			}
 		}else{
 			for _, fi := range fis {
 				if fi.IsDir(){
-					fmt.Fprintf(w,DirFormatting,AttribDirInfo{fi})
+					fmt.Fprintf(w,DirFormatting,DirNameSizeModTimeStringer{fi})
 				}else if fi.Mode().IsRegular() {
-					fmt.Fprintf(w,FileFormatting,AttribFileInfo{fi})
+					fmt.Fprintf(w,FileFormatting,FileNameSizeModTimeStringer{fi})
 				}
 			}
 		}
 	case NameSizeModTimeMode:
 		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
-				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, DirNameSizeModTimeModeStringer{fi})}
 			}
 			for _, fi := range fis {
-				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribFileExtendedInfo{fi})}
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, FileNameSizeModTimeModeStringer{fi})}
 			}
 		}else{
 			for _, fi := range fis {
 				if fi.IsDir(){
-					fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})
+					fmt.Fprintf(w,DirFormatting, DirNameSizeModTimeModeStringer{fi})
 				}else if fi.Mode().IsRegular() {
-					fmt.Fprintf(w,FileFormatting, AttribDirExtendedInfo{fi})
+					fmt.Fprintf(w,FileFormatting, FileNameSizeModTimeModeStringer{fi})
 				} 
 			}
 		}
 	case NameTypeSizeModTimeMode:
 		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
-				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})}
+				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, DirNameSizeModTimeModeStringer{fi})}
 			}
 			for _, fi := range fis {
 				// TODO retrieve actual type,(and so weather Text) maybe from xattribs?
-				//if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"text/*",fi})}
-				if fi.Mode().IsRegular() {fmt.Fprintf(w,DefaultFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})}
+				//if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, FileNameTypeSizeModTimeModeStringer{"text/*",fi})}
+				if fi.Mode().IsRegular() {fmt.Fprintf(w,DefaultFormatting, FileNameTypeSizeModTimeModeStringer{"application/octet-stream",fi})}
 			}
 		}else{
 			for _, fi := range fis {
 				if fi.IsDir(){
-					fmt.Fprintf(w,DirFormatting, AttribDirExtendedInfo{fi})
+					fmt.Fprintf(w,DirFormatting, DirNameSizeModTimeModeStringer{fi})
 				}else if fi.Mode().IsRegular() {
-					//fmt.Fprintf(w,FileFormatting, AttribTypedFileExtendedInfo{"text/*",fi})
-					fmt.Fprintf(w,DefaultFormatting, AttribTypedFileExtendedInfo{"application/octet-stream",fi})
+					//fmt.Fprintf(w,FileFormatting, FileNameTypeSizeModTimeModeStringer{"text/*",fi})
+					fmt.Fprintf(w,DefaultFormatting, FileNameTypeSizeModTimeModeStringer{"application/octet-stream",fi})
 				}
 			}
 		}

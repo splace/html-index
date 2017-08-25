@@ -13,7 +13,7 @@ const (
 	NameTypeSizeModTimeMode
 )
 
-// make a hierarchy of formatting, by using separate stringers, all embedding the source, for the different compositions of information.
+// make a hierarchy of formatting, by using separate stringers, all embedding FileInfo, for the different arrangements of information.
 // a hierarchy fits XML structure, and means element id's are all just strings.   
 
 var FileFormatting = "\t<txt %s/>\n"

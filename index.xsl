@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-				<tr><td>📂</td><td><a href="..">.. [Parent Folder]</a></td></tr>
+				<tr><td>🗁</td><td><a href="..">.. [Parent Folder]</a></td></tr>
                <xsl:apply-templates/>
             </tbody>
         </table>

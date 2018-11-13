@@ -13,7 +13,8 @@ const (
 	NameTypeSizeModTimeMode
 )
 
-// make a hierarchy of formatting, by using separate stringers, all embedding FileInfo, for the different arrangements of information.
+// format by using stringers embedding os.FileInfo, each for the different arrangements of information for a file.
+// hierarically use a stringer inside a stringer to only have one underlying stringer for each type.
 // a hierarchy fits XML structure, and means element id's are all just strings.   
 
 var FileFormatting = "\t<txt %s/>\n"
@@ -69,8 +70,9 @@ func (fi DirNameSizeModTimeModeStringer) String() string {
 	return fmt.Sprintf("name=\"%s\" modified=\"%s\" mode=\"%s\"", escape(fi.Name()), fi.ModTime().Format(time.RFC3339), fi.Mode())
 }
 
-// WriteXML writes the directory listing as XML, using the indicated Tag writer.
-func WriteXML(w io.WriteCloser, dir string,tagWriter func(io.WriteCloser, []os.FileInfo)) (err error){
+// WriteXML writes formatted XML to the provided writer.
+// the provided Tag writing function formats each file in the provided directory to an XML Tag.
+func WriteXML(w io.Writer, dir string, tagWriter func(io.Writer, []os.FileInfo)) (err error){
 	folder,err:=os.Open(dir) 
 	if err!=nil{return}
 	fileInfos,err:=folder.Readdir(0)
@@ -80,7 +82,6 @@ func WriteXML(w io.WriteCloser, dir string,tagWriter func(io.WriteCloser, []os.F
 	fmt.Fprint(w,"<index host=\""+ignoreError(os.Hostname)+"\" name=\""+path.Join(ignoreError(os.Getwd),folder.Name())+"\" >\n")
 	tagWriter(w,fileInfos)
 	fmt.Fprint(w,"</index>\n")
-	w.Close()
 	return
 }
 
@@ -89,13 +90,13 @@ func ignoreError(fn func ()(string,error)) string{
 	return r
 }
 
-// create a closure for a specific tag structure
-func TagWriter(details uint,DirFirst ...bool) func(io.WriteCloser, []os.FileInfo){
-	return func(w io.WriteCloser, fis []os.FileInfo){ WriteTags(w, fis,details,DirFirst...)}
+// create a closure for a specific tag structure.
+func TagWriter(details uint,DirFirst ...bool) func(io.Writer, []os.FileInfo){
+	return func(w io.Writer, fis []os.FileInfo){ WriteTags(w, fis,details,DirFirst...)}
 }
 
 // WriteTags writes the directory listing as XML Tags, with the required details, and optionally folders first.
-func WriteTags(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {
+func WriteTags(w io.Writer, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {
 	switch details {
 	case NameOnly:
 		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
@@ -154,7 +155,7 @@ func WriteTags(w io.WriteCloser, fis []os.FileInfo,details uint,dirFirstFlag ...
 				if fi.IsDir() {fmt.Fprintf(w,DirFormatting, DirNameSizeModTimeModeStringer{fi})}
 			}
 			for _, fi := range fis {
-				// TODO retrieve actual type,(and so weather Text) maybe from xattribs?
+				// TODO retrieve actual type,(and so if Text) maybe from xattribs?
 				//if fi.Mode().IsRegular() {fmt.Fprintf(w,FileFormatting, FileNameTypeSizeModTimeModeStringer{"text/*",fi})}
 				if fi.Mode().IsRegular() {fmt.Fprintf(w,DefaultFormatting, FileNameTypeSizeModTimeModeStringer{"application/octet-stream",fi})}
 			}

@@ -6,8 +6,10 @@ import "fmt"
 import "time"
 import "path"
 
+type details uint8
+
 const (
-	NameOnly = iota
+	NameOnly details = iota
 	NameSizeModTime
 	NameSizeModTimeMode
 	NameTypeSizeModTimeMode
@@ -91,13 +93,13 @@ func ignoreError(fn func ()(string,error)) string{
 }
 
 // create a closure for a specific tag structure.
-func TagWriter(details uint,DirFirst ...bool) func(io.Writer, []os.FileInfo){
-	return func(w io.Writer, fis []os.FileInfo){ WriteTags(w, fis,details,DirFirst...)}
+func TagWriter(d details, DirFirst ...bool) func(io.Writer, []os.FileInfo){
+	return func(w io.Writer, fis []os.FileInfo){ WriteTags(w, fis, d, DirFirst...)}
 }
 
 // WriteTags writes the directory listing as XML Tags, with the required details, and optionally folders first.
-func WriteTags(w io.Writer, fis []os.FileInfo,details uint,dirFirstFlag ...bool) {
-	switch details {
+func WriteTags(w io.Writer, fis []os.FileInfo,d details,dirFirstFlag ...bool) {
+	switch d {
 	case NameOnly:
 		if len(dirFirstFlag)==0 || dirFirstFlag[0]{
 			for _, fi := range fis {
